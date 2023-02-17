@@ -76,5 +76,10 @@ vim.api.nvim_create_user_command("ZettelTest", function(args)
 
 end, {})
 
+vim.api.nvim_create_user_command("ZettelBrain", function(args)
+    vim.cmd(":vsplit")
+    vim.cmd(":execute 'normal ,ww'")
+end, {})
+
 
 return M
