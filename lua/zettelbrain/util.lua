@@ -1,5 +1,26 @@
 local M = {}
 
+local zettelFilepath = function(filename)
+    -- :p gets the full path
+    local current_directory = vim.api.nvim_exec("echo expand('%:p:h')", true)
+
+    return current_directory
+end
+
+--- Creates a zettel based on given input.
+M.mkzettel = function(text, desc_name, uniqueId)
+    local current_directory = zettelFilepath(uniqueId)
+    
+    -- Place zettel tag
+    vim.api.nvim_put({'['..desc_name..']('..uniqueId..'.md)'},'c', false, true)
+
+    -- Create window 
+    vim.cmd(":vsplit "..current_directory.."/"..uniqueId..".md")
+
+    local bufnr = vim.api.nvim_get_current_buf()
+    vim.api.nvim_buf_set_lines(bufnr,0,0, false, text)
+end
+
 M.uniqueId = function(args)
     local file_name = ""
     if args == nil then
