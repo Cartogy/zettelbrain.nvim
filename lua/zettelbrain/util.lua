@@ -71,9 +71,14 @@ local metadata_to_table = function(metadata)
     local data_table = {}
     for key, val in ipairs(metadata) do
         local splitted_val = vim.fn.split(val,":")
+
         -- get metadata information
         local info_key = vim.fn.trim(splitted_val[1], " ")
-        local info_val = vim.fn.trim(splitted_val[2], " ")
+        -- remove key from array
+        table.remove(splitted_val, 1)
+        -- join all elements that were split with ':'.
+        -- we only cared about the first occurence of ':'.
+        local info_val = vim.fn.join(splitted_val, ":")
         data_table[info_key] = info_val
         --local info_key = vim.fn.trim(splitted_val[0], " ")
         --print(info_key)
