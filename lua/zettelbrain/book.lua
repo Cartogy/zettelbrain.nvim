@@ -19,15 +19,16 @@ local create_chapter_metadata = function(chapter_name)
     local final_tags = ''
     if str_tags == '' then
         -- dont' include comma ','
-        final_tags = "[" .. str_tags .. "chapter" .. "]"
+        final_tags = "[" .. "chapter" .. "]"
     else
         -- include comma ','
         final_tags = "[" .. str_tags .. ", chapter" .. "]"
     end
 
-    chapter_metadata["book"] = metadata_table["title"]
-    chapter_metadata["tags"] = final_tags
-    chapter_metadata["id"] = Util.uniqueId(chapter_name)
+    chapter_metadata[1] = {"title", chapter_name}
+    chapter_metadata[2] = {"book", metadata_table["title"] }
+    chapter_metadata[3] = {"tags", final_tags}
+    chapter_metadata[4] = {"ID", Util.uniqueId() }
 
     return chapter_metadata
 end
@@ -38,8 +39,11 @@ vim.api.nvim_create_user_command("ZettelBookChapter", function(args)
         return
     end
 
-    local chapter_metadata = create_chapter_metadata(args[1])
+    local chapter_name = args['fargs'][1]
+    local chapter_metadata = create_chapter_metadata(chapter_name)
 
-    print(vim.inspect(chapter_metadata))
+    local metadata_text = Util.metadata_to_string(chapter_metadata)
+
+    Util.mkzettel(metadata_text, chapter_name,chapter_metadata[4][2])
 
 end, {nargs = "+"})

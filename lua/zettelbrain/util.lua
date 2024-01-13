@@ -1,5 +1,22 @@
 local M = {}
 
+M.metadata_to_string = function(metadata_table)
+    local m_table = {}
+    table.insert(m_table, "---")
+
+    for _, arr in ipairs(metadata_table) do
+        local key = arr[1]
+        local val = arr[2]
+        local current_line = ""
+        current_line = current_line .. key .. ":" .. " " .. val
+
+        table.insert(m_table, current_line)
+    end
+    table.insert(m_table, "---")
+
+    return m_table
+end
+
 local zettelFilepath = function(filename)
     -- :p gets the full path
     local current_directory = vim.api.nvim_exec("echo expand('%:p:h')", true)

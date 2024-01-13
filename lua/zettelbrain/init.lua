@@ -4,6 +4,21 @@ local header_template = {'title','tags','ID'}
 
 local M = {}
 
+M.metadata_to_string = function(metadata_table)
+    local m_table = {}
+    table.insert(m_table, "---")
+
+    for key, val in pairs(metadata_table) do
+        local current_line = ""
+        current_line = current_line .. key .. ":" .. " " .. val
+
+        table.insert(m_table, current_line)
+    end
+    table.insert(m_table, "---")
+
+    return m_table
+end
+
 -- Generic zettel file.
 M.mkzettel_generic = function(desc_name, args)
     local file_name = Util.uniqueId(args)
