@@ -4,6 +4,8 @@ M.metadata_to_string = function(metadata_table)
     local m_table = {}
     table.insert(m_table, "---")
 
+    print(vim.inspect(metadata_table))
+
     for _, arr in ipairs(metadata_table) do
         local key = arr[1]
         local val = arr[2]
@@ -53,7 +55,8 @@ M.uniqueId = function(args)
 end
 
 local metadata_info = function()
-    vim.cmd("execute cursor(0,0)")
+    -- vim.cmd("execute cursor(0,0)")
+    vim.api.nvim_win_set_cursor(0, {1,0})
 
     -- the '---' can be in the current line.
     local start_metadata = vim.fn.search("---","c") + 1

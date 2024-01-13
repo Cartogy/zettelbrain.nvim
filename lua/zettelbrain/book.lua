@@ -7,6 +7,8 @@ end
 
 local create_chapter_metadata = function(chapter_name)
     local metadata_table = Util.get_metadata()
+    print("Metadata")
+    print(vim.inspect(metadata_table))
 
     local chapter_metadata = {}
     -- remove any whitespace
@@ -39,11 +41,17 @@ vim.api.nvim_create_user_command("ZettelBookChapter", function(args)
         return
     end
 
+    --
+    local start_cursor = vim.api.nvim_win_get_cursor(0)
+
     local chapter_name = args['fargs'][1]
     local chapter_metadata = create_chapter_metadata(chapter_name)
 
+    vim.api.nvim_win_set_cursor(0, start_cursor)
+
     local metadata_text = Util.metadata_to_string(chapter_metadata)
 
-    Util.mkzettel(metadata_text, chapter_name,chapter_metadata[4][2])
+    local unique_id = chapter_metadata[4][2]
+    Util.mkzettel(metadata_text, chapter_name,unique_id)
 
 end, {nargs = "+"})
